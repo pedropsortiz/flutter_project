@@ -12,8 +12,8 @@ class _AddAgendaItemPageState extends State<AddAgendaItemPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _startTimeController = TextEditingController();
-  final TextEditingController _endTimeController = TextEditingController();
+  final TextEditingController _timePeriodController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
   Color _selectedColor = Colors.blue;
 
   @override
@@ -74,21 +74,47 @@ class _AddAgendaItemPageState extends State<AddAgendaItemPage> {
                 },
               ),
               TextFormField(
-                controller: _startTimeController,
-                decoration: InputDecoration(labelText: 'Hora de Início'),
+                controller: _timePeriodController,
+                decoration: InputDecoration(labelText: 'Período de Tempo (HH:mm-HH:mm)'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, insira a hora de início';
+                    return 'Por favor, insira o período de tempo';
+                  }
+                  // Adicione uma verificação básica para o formato do período de tempo
+                  if (!RegExp(r'^\d{2}:\d{2}-\d{2}:\d{2}$').hasMatch(value)) {
+                    return 'Por favor, insira o período de tempo no formato correto';
                   }
                   return null;
                 },
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(FocusNode()); // Para evitar que o teclado apareça
+
+                  TimeOfDay? startTime = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                  );
+
+                  if (startTime != null) {
+                    TimeOfDay? endTime = await showTimePicker(
+                      context: context,
+                      initialTime: startTime,
+                    );
+
+                    if (endTime != null) {
+                      setState(() {
+                        _timePeriodController.text =
+                            "${startTime.format(context)}-${endTime.format(context)}";
+                      });
+                    }
+                  }
+                },
               ),
               TextFormField(
-                controller: _endTimeController,
-                decoration: InputDecoration(labelText: 'Hora de Término'),
+                controller: _locationController,
+                decoration: InputDecoration(labelText: 'Local'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor, insira a hora de término';
+                    return 'Por favor, insira o local';
                   }
                   return null;
                 },
@@ -101,8 +127,14 @@ class _AddAgendaItemPageState extends State<AddAgendaItemPage> {
               SizedBox(height: 10),
               DropdownButton<Color>(
                 value: _selectedColor,
-                items: <Color>[Colors.blue, Colors.green, Colors.red, Colors.orange, Colors.purple, Colors.brown]
-                    .map((Color color) {
+                items: <Color>[
+                  Colors.blue,
+                  Colors.green,
+                  Colors.red,
+                  Colors.orange,
+                  Colors.purple,
+                  Colors.brown
+                ].map((Color color) {
                   return DropdownMenuItem<Color>(
                     value: color,
                     child: Container(
