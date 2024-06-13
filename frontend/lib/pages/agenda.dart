@@ -10,7 +10,7 @@ class Agenda extends StatefulWidget {
 
 class _AgendaState extends State<Agenda> {
   final EventController _eventController = EventController();
-  String _selectedView = 'Day';
+  String _selectedView = 'Dia';
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _AgendaState extends State<Agenda> {
 
   Widget _getCalendarView() {
     switch (_selectedView) {
-      case 'Day':
+      case 'Dia':
         return DayView(
           controller: _eventController,
           onEventTap: (events, date) {
@@ -44,7 +44,7 @@ class _AgendaState extends State<Agenda> {
             );
           },
         );
-      case 'Week':
+      case 'Semana':
         return WeekView(
           controller: _eventController,
           onEventTap: (events, date) {
@@ -81,6 +81,7 @@ class _AgendaState extends State<Agenda> {
       appBar: AppBar(
         title: const Text('Minha Agenda'),
         backgroundColor: Colors.blue[900],
+        automaticallyImplyLeading: false,
         actions: [
           DropdownButton<String>(
             value: _selectedView,
@@ -90,7 +91,7 @@ class _AgendaState extends State<Agenda> {
                 _selectedView = newValue!;
               });
             },
-            items: <String>['Day', 'Week', 'Month'].map((String value) {
+            items: <String>['Dia', 'Semana', 'Mês'].map((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Padding(
@@ -162,8 +163,8 @@ void _showLogoutDialog(BuildContext context) {
 final List<CalendarEventData> _events = [
   CalendarEventData(
     date: DateTime.now(),
-    title: "Project meeting",
-    description: "Today is project meeting.",
+    title: "Reunião de Projeto",
+    description: "Hoje é a reunião de projeto.",
     startTime: DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day, 18, 30),
     endTime: DateTime(
@@ -176,8 +177,8 @@ final List<CalendarEventData> _events = [
         DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
     endTime: DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day, 19),
-    title: "Wedding anniversary",
-    description: "Attend uncle's wedding anniversary.",
+    title: "Aniversário de Casamento",
+    description: "Participar do aniversário de casamento do tio.",
     color: Colors.green,
   ),
   CalendarEventData(
@@ -186,8 +187,8 @@ final List<CalendarEventData> _events = [
         DateTime.now().year, DateTime.now().month, DateTime.now().day, 14),
     endTime: DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day, 17),
-    title: "Football Tournament",
-    description: "Go to football tournament.",
+    title: "Torneio de Futebol",
+    description: "Ir ao torneio de futebol.",
     color: Colors.red,
   ),
   CalendarEventData(
@@ -202,8 +203,8 @@ final List<CalendarEventData> _events = [
         DateTime.now().add(Duration(days: 3)).month,
         DateTime.now().add(Duration(days: 3)).day,
         14),
-    title: "Sprint Meeting.",
-    description: "Last day of project submission for last year.",
+    title: "Reunião de Sprint",
+    description: "Último dia de entrega do projeto do ano passado.",
     color: Colors.orange,
   ),
   CalendarEventData(
@@ -218,8 +219,8 @@ final List<CalendarEventData> _events = [
         DateTime.now().subtract(Duration(days: 2)).month,
         DateTime.now().subtract(Duration(days: 2)).day,
         16),
-    title: "Team Meeting",
-    description: "Team Meeting",
+    title: "Reunião de Equipe",
+    description: "Reunião de Equipe",
     color: Colors.purple,
   ),
   CalendarEventData(
@@ -234,8 +235,8 @@ final List<CalendarEventData> _events = [
         DateTime.now().subtract(Duration(days: 2)).month,
         DateTime.now().subtract(Duration(days: 2)).day,
         12),
-    title: "Chemistry Viva",
-    description: "Today is Joe's birthday.",
+    title: "Viva de Química",
+    description: "Hoje é o aniversário do Joe.",
     color: Colors.brown,
   ),
 ];
