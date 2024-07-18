@@ -11,7 +11,12 @@ class Event extends Model
 
     protected $guarded = [];
 
-    public function suggestions()
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function eventSuggestion()
     {
         return $this->hasMany(EventSuggestion::class);
     }

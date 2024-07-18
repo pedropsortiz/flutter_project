@@ -21,6 +21,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $user_id = Auth::id();
+            
             Auth::login($user);
 
             $token = $user->createToken('auth-token')->plainTextToken;
