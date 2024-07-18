@@ -7,24 +7,28 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
-    /**
-     * The list of the inputs that are never flashed to the session on validation exceptions.
-     *
-     * @var array<int, string>
-     */
+    protected $levels = [
+        // Define níveis de log
+    ];
+
+    protected $dontReport = [
+        // Define exceções que não devem ser reportadas
+    ];
+
     protected $dontFlash = [
         'current_password',
         'password',
         'password_confirmation',
     ];
 
-    /**
-     * Register the exception handling callbacks for the application.
-     */
-    public function register(): void
+    public function report(Throwable $exception)
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        parent::report($exception);
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        dd($exception);
+        return parent::render($request, $exception);
     }
 }

@@ -16,14 +16,14 @@ class EventController extends Controller
 {
     public function index()
     {
-        $user = User::find(2);
+        $user = User::orderBy('created_at', 'desc')->first();
 
         return Event::where('user_id', $user->id)->get();
     }
 
   public function store(Request $request)
   {
-    $user = User::find(2);
+    $user = User::orderBy('created_at', 'desc')->first();
 
     $event = new Event();
     $event->fill($request->all());
@@ -137,11 +137,8 @@ class EventController extends Controller
         return EventResource::make($event);
     }
 
-    public function destroy($id)
+    public function destroy(Event $event)
     {
-        $user = User::find(2);
-    
-        $event = Event::where('user_id', $user->id)->findOrFail($id);
         $event->delete();
     
         return response()->noContent();
